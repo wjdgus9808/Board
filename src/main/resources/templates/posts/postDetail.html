@@ -1,0 +1,58 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header"/>
+<body>
+<script>
+
+</script>
+<div class="container" th:object="${post}">
+    <div th:replace="fragments/mainHeader :: mainHeader">
+        <h3 th:text="*{title}">게시판</h3>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title" th:text="*{title}">게시글 제목</h5>
+            <p class="card-text">조회수: 100</p>
+            <p th:text="|작성자: ${post.member.getNickname()}|" class="card-text">작성자</p>
+            <hr>
+            <!-- 이미지 파일들 -->
+            <img th:each="imageFile : ${post.imageFiles}" th:src="|/images/${imageFile.getStoreFileName()}|" width="300" height="300"/>
+            <!-- 게시글 내용 -->
+            <p class="card-text" th:text="*{text}"></p>
+        </div>
+    </div>
+    <div class="card mt-5">
+        <div class="card-body">
+            <h5 class="card-title">댓글</h5>
+            <div class="mb-3" th:if="${post.comments}" th:each="comment: ${post.comments}">
+                <label th:id="${comment.id}" th:text="|${comment.member.nickname}: ${comment.text}|"  for="commentContent" class="form-label">댓글 내용</label>
+                <div class="text-muted">
+                    <small>
+                        <a href="#" class="me-2 replyButton">대댓글</a>
+                        <form th:action = "@{|/comments/${post.id}/${comment.id}|}" th:method="delete">
+                            <button type="submit" class="btn text-danger">삭제</button>
+                        </form>
+                    </small>
+                </div>
+            </div>
+            <form th:action="@{|/comments/${post.id}|}" th:object="${commentForm}" method="post">
+                <div class="mb-3">
+                    <textarea th:field="*{text}" class="form-control" id="commentContent" name="commentContent" rows="3" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">작성</button>
+            </form>
+        </div>
+    </div>
+    <div class="d-flex mt-5">
+        <form class th:action="@{/posts/{postId}/edit(postId=*{id})}" method="get" >
+<!--            <input type="hidden" name="_method" value="put">-->
+            <button type="submit" class="btn btn-primary me-2">글 수정</button>
+        </form>
+        <form class th:action="@{/posts/{postId}(postId=*{id})}" th:method="delete" >
+            <button type="submit" class="btn btn-primary me-2">글 삭제</button>
+        </form>
+    </div>
+
+</div>
+
+</body>
+</html>

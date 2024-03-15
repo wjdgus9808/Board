@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div class="header" th:fragment="homeHeader(title)">
+  <div class="my-4"></div>
+  <nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/">Board</a>
+      <div class="d-flex">
+        <form class="d-flex">
+          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+          <button class="btn btn-outline-success me-2" type="submit">Search</button>
+          <p style="width: 100px; text-align: center" th:if="${loginMember}" th:text="|${loginMember?.nickname} 님|"></p>
+        </form>
+        <form th:if="${loginMember}" th:action="@{/members/logout}" method="post">
+          <button class=" btn btn-primary" type="submit">
+            로그아웃
+          </button>
+        </form>
+        <div th:if="${loginMember == null}">
+          <a href="/members/login" class="btn btn-primary me-2" role="button" data-bs-toggle="button">로그인</a>
+          <a href="/members/new" class="btn btn-primary" role="button" data-bs-toggle="button">회원 가입</a>
+        </div>
+
+      </div>
+    </div>
+  </nav>
+</div>
+    </div>
+  </nav>
+  <hr class="my-4">
+  <h3 class="text-muted" th:replace="${title}">레이아웃 타이틀</h3>
+</div>
+

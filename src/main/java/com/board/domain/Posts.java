@@ -27,6 +27,8 @@ public class Posts {
     private Member member;
 
     private String title;
+
+    @Lob
     private String text;
     private Long view; //조회수
 
@@ -38,6 +40,7 @@ public class Posts {
     @CollectionTable(name = "upload_file",joinColumns =@JoinColumn(name="post_id"))
     private List<UploadFile> uploadFiles = new ArrayList<>();
 
+    private Integer likeCount = 0;
     @Column(name = "created_date")
     private LocalDateTime createdDate;
     @Column(name = "modified_date")
@@ -54,6 +57,13 @@ public class Posts {
     public void addComment(Comment comment) {
         comments.add(comment);
         comment.setPost(this);
+    }
+
+    public void increaseLike() {
+        this.likeCount += 1;
+    }
+    public void decreaseLike() {
+        this.likeCount -= 1;
     }
 
 }

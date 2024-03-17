@@ -33,4 +33,5 @@ public class PostRepository {
     public void save(Posts post) {
         em.persist(post);
     }
+
 }

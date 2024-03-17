@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
-@Transactional(propagation = Propagation.SUPPORTS)
+@Transactional
 class CommentServiceTest {
 
     @Autowired
@@ -42,9 +42,9 @@ class CommentServiceTest {
         commentRequestDto.setText("첫번째 댓글입니다");
         Member member = memberRepository.findById(1L);
         //when
-        commentService.addComment(1L, commentRequestDto, member.getId());
+        Long commentId = commentService.addComment(1L, commentRequestDto, member.getId());
         //then
-        Comment findComment = commentRepository.findByCommentId(1L);
+        Comment findComment = commentRepository.findByCommentId(commentId);
         assertThat(findComment.getParent()).isNull();
         assertThat(findComment.getMember()).isEqualTo(member);
     }
